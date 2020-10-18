@@ -4,27 +4,12 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  SafeAreaView
 } from 'react-native';
-import { getAvailableTitles } from "../api/Helpers";
-
-const API = 'https://swapi.co/api';
-const ROMAN = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+import { addMyItem, getAvailableTitles } from "../api/Helpers";
 
 class SearchAndAddTitle extends Component {
-  static renderFilm(film) {
-    const { title, director, opening_crawl, episode_id } = film;
-    const roman = episode_id < ROMAN.length ? ROMAN[episode_id] : episode_id;
-
-    return (
-      <View>
-        <Text style={styles.titleText}>{roman}. {title}</Text>
-        <Text style={styles.directorText}>({director})</Text>
-        <Text style={styles.openingText}>{opening_crawl}</Text>
-      </View>
-    );
-  }
-
   constructor(props) {
     super(props);
     this.state = {
@@ -37,6 +22,10 @@ class SearchAndAddTitle extends Component {
     let films = await getAvailableTitles();
     this.setState({ films: films });
 
+  }
+
+  addItem(item) {
+    this.props.addItem(item);
   }
 
   findFilm(query) {
@@ -52,39 +41,47 @@ class SearchAndAddTitle extends Component {
   render() {
     const { query } = this.state;
     const data = this.findFilm(query);
-  
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <Autocomplete
+          inputContainerStyle={styles.inputContainerStyle}
+          listContainerStyle={styles.listContainerStyle}
+          placeholder="Enter a show or movie title"
           data={data}
           defaultValue={query}
           onChangeText={text => this.setState({ query: text })}
+          keyExtractor={item => item.id.toString() }
           renderItem={({ item, i }) => (
-            <TouchableOpacity onPress={() => this.setState({ query: item })}>
-            <Text>{item.title}</Text>
-          </TouchableOpacity>
+            <TouchableOpacity key={item.title} onPress={() => this.addItem(item)}>
+              <Text>{item.title}</Text>
+            </TouchableOpacity>
           )}
         />
 
-      </View>
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#F5FCFF',
-    flex: 1,
-    paddingTop: 25
+    backgroundColor: '#ffffff',
+    paddingTop: 25,
+    width: "100%",
+    zIndex: 1000
+  },
+  inputContainerStyle: {
+    padding: 10,
+    borderColor: "#000000"
+  },
+  listContainerStyle: {
+    padding: 10,
+    flex: 1
   },
   autocompleteContainer: {
     marginLeft: 10,
-    marginRight: 10
-  },
-  itemText: {
-    fontSize: 15,
-    margin: 2
+    marginRight: 10,
   },
   descriptionContainer: {
     // `backgroundColor` needs to be set otherwise the
