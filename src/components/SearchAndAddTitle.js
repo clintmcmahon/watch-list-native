@@ -5,7 +5,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-  SafeAreaView
+  SafeAreaView,
+  TextInput
 } from 'react-native';
 import { getAvailableTitles } from "../api/Helpers";
 
@@ -38,6 +39,10 @@ class SearchAndAddTitle extends Component {
     return films.filter(film => film.title.search(regex) >= 0);
   }
 
+  renderTextInput = (props) => {
+    return <TextInput {...props} style={styles.textInput}></TextInput>
+  }
+
   render() {
     const { query } = this.state;
     const films = this.findFilm(query);
@@ -47,10 +52,12 @@ class SearchAndAddTitle extends Component {
           autoCapitalize="none"
           autoCorrect={false}
           containerStyle={styles.autocompleteContainer}
+          inputContainerStyle={styles.inputContainerStyle}
           data={films}
           defaultValue={query}
           onChangeText={text => this.setState({ query: text })}
-          placeholder="Enter Star Wars film title"
+          placeholder="Enter a show or movie title"
+          renderTextInput={this.renderTextInput}
           renderItem={({ item }) => (
             <TouchableOpacity onPress={() => this.addItem(item)}>
               <Text style={styles.itemText}>
@@ -68,29 +75,17 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10
   },
+  inputContainerStyle: {
+    fontSize: 18
+  },
+  textInput:{
+    minHeight:42,
+    padding: 0,
+    fontSize: 24
+  },
   itemText: {
-    fontSize: 15,
-    margin: 2
-  },
-  
-  infoText: {
-    textAlign: 'center'
-  },
-  titleText: {
-    fontSize: 18,
-    fontWeight: '500',
-    marginBottom: 10,
-    marginTop: 10,
-    textAlign: 'center'
-  },
-  directorText: {
-    color: 'grey',
-    fontSize: 12,
-    marginBottom: 10,
-    textAlign: 'center'
-  },
-  openingText: {
-    textAlign: 'center'
+    fontSize: 26,
+    margin: 5
   }
 });
 
