@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, SafeAreaView, FlatList, View,Button } from 'react-native';
+import { StyleSheet, Text, SafeAreaView, FlatList, View, Button } from 'react-native';
 import { featchAndSaveAllTitlesDummy, getMyItems, deleteAll, removeMyItem, addMyItem } from "./src/api/Helpers"
 import SearchAndAddTitle from "./src/components/SearchAndAddTitle";
 
@@ -14,8 +14,8 @@ export default function App() {
 
   const listEmptyView = () => {
     return (
-      <View style={styles.MainContainer}>
-        <Text style={{ textAlign: 'center' }}> You don't have anything to watch!</Text>
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}> You don't have anything to watch!</Text>
       </View>
     )
   }
@@ -24,7 +24,7 @@ export default function App() {
     let myItems = await addMyItem(item);
     setMyShows(myItems)
   }
-  
+
   const removeItem = async (itemId) => {
     let myItems = await removeMyItem(itemId);
     setMyShows(myItems);
@@ -34,37 +34,33 @@ export default function App() {
     deleteAll();
   }
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.searchContainer}>
+    <SafeAreaView style={styles.container} >
+      <View style={styles.innerContainer}>
         <SearchAndAddTitle addItem={addItem} />
-      </View>
-      <View style={styles.headerContainer}>
-        <Text style={styles.header} >What to watch</Text>
-        <Button
-                onPress={removeAll}
-                title="Delete"
-                accessibilityLabel="Learn more about this purple button"
-              />
-      </View>
-      <View style={styles.showContainer}>
-        <FlatList
-          style={styles.list}
-          data={myShows}
-          renderItem={({ item, index, separators }) => (
-            <View
-              key={index.toString()}
-              style={styles.itemContainer}
-            >
-              <Text style={styles.itemText}>{item.title}</Text>
-              <Button
-                onPress={() => removeItem(item.id)}
-                title="Delete"
-                accessibilityLabel="Learn more about this purple button"
-              />
-            </View>
-          )}
-          ListEmptyComponent={listEmptyView}
-        />
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.header} >What to watch</Text>
+        </View>
+        <View style={styles.whatToWatchContainer}>
+          <FlatList
+            style={styles.whatToWatchList}
+            data={myShows}
+            renderItem={({ item, index, separators }) => (
+              <View
+                key={index.toString()}
+                style={styles.itemContainer}
+              >
+                <Text style={styles.itemText}>{item.title}</Text>
+                <Button
+                  onPress={() => removeItem(item.id)}
+                  title="Delete"
+                  accessibilityLabel="Learn more about this purple button"
+                />
+              </View>
+            )}
+            ListEmptyComponent={listEmptyView}
+          />
+        </View>
+
       </View>
     </SafeAreaView>
   );
@@ -73,33 +69,29 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#ffffff"
   },
-  headerContainer: {
-    paddingLeft: 20
+  innerContainer:{
+   marginTop: 20,
+   flex:1
   },
   header: {
-    fontSize: 42,
+    fontSize: 38,
     fontWeight: "600"
   },
-  searchContainer: {
-    paddingTop: 20,
-    paddingLeft: 20,
-    paddingRight: 20
-  },
-  showContainer: {
-    flex: 1,
-    padding: 20
-  },
-  list: {
-    backgroundColor: "#ffffff",
+  whatToWatchContainer:{
     flex: 1
   },
-  itemContainer: {
-    flex: 1,
-    flexDirection: "row",
-    margin: 20
+  emptyContainer:{
+    marginTop: 10
   },
-  itemText: {
-    fontSize: 20
-  }
+  emptyText:{
+    fontSize: 18
+  },
+  descriptionContainer: {
+    // `backgroundColor` needs to be set otherwise the
+    // autocomplete input will disappear on text input.
+    backgroundColor: '#ffffff',
+    marginTop: 20
+  },
 });

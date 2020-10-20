@@ -7,7 +7,7 @@ import {
   View,
   SafeAreaView
 } from 'react-native';
-import { addMyItem, getAvailableTitles } from "../api/Helpers";
+import { getAvailableTitles } from "../api/Helpers";
 
 class SearchAndAddTitle extends Component {
   constructor(props) {
@@ -40,55 +40,39 @@ class SearchAndAddTitle extends Component {
 
   render() {
     const { query } = this.state;
-    const data = this.findFilm(query);
+    const films = this.findFilm(query);
 
     return (
-      <SafeAreaView style={styles.container}>
         <Autocomplete
-          inputContainerStyle={styles.inputContainerStyle}
-          listContainerStyle={styles.listContainerStyle}
-          placeholder="Enter a show or movie title"
-          data={data}
+          autoCapitalize="none"
+          autoCorrect={false}
+          containerStyle={styles.autocompleteContainer}
+          data={films}
           defaultValue={query}
           onChangeText={text => this.setState({ query: text })}
-          keyExtractor={item => item.id.toString() }
-          renderItem={({ item, i }) => (
-            <TouchableOpacity key={item.title} onPress={() => this.addItem(item)}>
-              <Text>{item.title}</Text>
+          placeholder="Enter Star Wars film title"
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => this.addItem(item)}>
+              <Text style={styles.itemText}>
+                {item.title}
+              </Text>
             </TouchableOpacity>
           )}
         />
-
-      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#ffffff',
-    paddingTop: 25,
-    width: "100%",
-    zIndex: 1000
-  },
-  inputContainerStyle: {
-    padding: 10,
-    borderColor: "#000000"
-  },
-  listContainerStyle: {
-    padding: 10,
-    flex: 1
-  },
   autocompleteContainer: {
     marginLeft: 10,
-    marginRight: 10,
+    marginRight: 10
   },
-  descriptionContainer: {
-    // `backgroundColor` needs to be set otherwise the
-    // autocomplete input will disappear on text input.
-    backgroundColor: '#F5FCFF',
-    marginTop: 8
+  itemText: {
+    fontSize: 15,
+    margin: 2
   },
+  
   infoText: {
     textAlign: 'center'
   },
