@@ -4,9 +4,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
-  SafeAreaView,
-  TextInput
+  TextInput,
+  View
 } from 'react-native';
 import { getAvailableTitles } from "../api/Helpers";
 
@@ -22,10 +21,12 @@ class SearchAndAddTitle extends Component {
   async componentDidMount() {
     let films = await getAvailableTitles();
     this.setState({ films: films });
-
   }
 
   addItem(item) {
+    this.setState({
+      query: ''
+    });
     this.props.addItem(item);
   }
 
@@ -48,38 +49,36 @@ class SearchAndAddTitle extends Component {
     const films = this.findFilm(query);
 
     return (
-        <Autocomplete
-          autoCapitalize="none"
-          autoCorrect={false}
-          containerStyle={styles.autocompleteContainer}
-          inputContainerStyle={styles.inputContainerStyle}
-          data={films}
-          defaultValue={query}
-          onChangeText={text => this.setState({ query: text })}
-          placeholder="Enter a show or movie title"
-          renderTextInput={this.renderTextInput}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => this.addItem(item)}>
+      <Autocomplete
+        autoCapitalize="none"
+        autoCorrect={false}
+        containerStyle={styles.autocompleteContainer}
+        inputContainerStyle={styles.inputContainerStyle}
+        data={films}
+        defaultValue={query}
+        onChangeText={text => this.setState({ query: text })}
+        placeholder="Enter a show or movie title"
+        renderTextInput={this.renderTextInput}
+        keyExtractor={(item, i) => i.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity key={item.title} onPress={() => {
+            this.addItem(item)
+          }}>
+            <View style={styles.itemContainer}>
               <Text style={styles.itemText}>
                 {item.title}
               </Text>
-            </TouchableOpacity>
-          )}
-        />
+            </View>
+          </TouchableOpacity>
+        )}
+      />
     );
   }
 }
 
 const styles = StyleSheet.create({
-  autocompleteContainer: {
-    marginLeft: 10,
-    marginRight: 10
-  },
-  inputContainerStyle: {
-    fontSize: 18
-  },
-  textInput:{
-    minHeight:42,
+  textInput: {
+    minHeight: 42,
     padding: 0,
     fontSize: 24
   },

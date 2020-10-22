@@ -11,6 +11,7 @@ export const getAvailableTitles = async () =>{
         console.log(e)
     }
 }
+
 export const featchAndSaveAllTitlesDummy = async () => {
     console.log('Fetching dummy data');
     let titles = dummyTitles;
@@ -50,14 +51,19 @@ export const getMyItems = async () => {
     }
 }
 
-export const addMyItem = async (item) => {
+export const addMyItem = async (newItem) => {
     try {
         let myItems = await getMyItems();
         if(myItems === null || !Array.isArray(myItems) )
         {
             myItems = [];
         }
-        myItems.push(item);
+        if(myItems.some(item => item.id === newItem.id)){
+            //do nothing
+        } else{
+            myItems.push(newItem);
+        }
+     
         let myItemsJSON = JSON.stringify(myItems);
         await AsyncStorage.setItem('@watch-list-items', myItemsJSON)
         return myItems;
@@ -78,11 +84,9 @@ export const removeMyItem = async (itemId) => {
         return myItems;
     } catch (e) {
         console.log(e)
-    }
-
-   
-      
+    } 
 }
+
 export const deleteAll = async () =>{
     try {
         await AsyncStorage.removeItem('@watch-list-items')
