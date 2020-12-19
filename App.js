@@ -49,6 +49,9 @@ export default function App() {
     <SafeAreaView style={styles.container} >
       <StatusBar barStyle="dark-content" />
       <View style={styles.innerContainer}>
+        <View style={styles.logoContainer}>
+         
+        </View>
         <SearchAndAddTitle addItem={addItem} />
         <View style={styles.poweredBy}>
           <Text>Powered by </Text>
@@ -59,16 +62,20 @@ export default function App() {
             />
           </TouchableOpacity>
         </View>
-        <View style={styles.descriptionContainer}>
-          <Text style={styles.header} >What to watch</Text>
-        </View>
+
         <View style={styles.whatToWatchContainer}>
           <FlatList
             style={styles.whatToWatchList}
+            ListHeaderComponent={
+              <View style={styles.descriptionContainer}>
+                <Text style={styles.header} >What to watch</Text>
+              
+              </View>
+            }
             data={myShows}
             renderItem={({ item, index, separators }) => (
               <View
-                key={item.title}
+                key={index}
                 style={styles.itemContainer}
               >
                 <View>
@@ -100,11 +107,17 @@ const styles = StyleSheet.create({
   innerContainer: {
     flex: 1,
     padding: 20,
-    paddingTop: 30
+    paddingTop: 5
+  },
+  logoContainer: {
+    flex: 0,
+    flexDirection: "row",
+    justifyContent: "center",
+    paddingBottom: 20
   },
   logo: {
     width: 200,
-    height: 51
+    height: 51,
   },
   poweredBy: {
     flex: 0,

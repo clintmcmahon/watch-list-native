@@ -96,12 +96,12 @@ export const deleteAll = async () =>{
 }
 
 const dummyTitles = [
-    {id: 1, title: "Shawshank Redemption", service: "Netflix"},
-    {id: 2, title: "Tommy Boy", service: "Netflix"},
-    {id: 3, title: "Pen 15", service: "Hulu"},
-    {id: 4, title: "Paw Patrol", service: "Amazon"},
-    {id: 5, title: "Modern Love", service: "Netflix"},
-    {id: 6, title: "The Office", service: "Netflix"},
-    {id: 7, title: "Seinfeld", service: "Hulu"},
-    {id: 8, title: "Schitt's Creek", service: "Netflix"}
+    {id: 1, title: "Shawshank Redemption", service: "Netflix", year: "2015"},
+    {id: 2, title: "Tommy Boy", service: "Netflix", year: "2015"},
+    {id: 3, title: "Pen 15", service: "Hulu", year: "2015"},
+    {id: 4, title: "Paw Patrol", service: "Amazon", year: "2015"},
+    {id: 5, title: "Modern Love", service: "Netflix", year: "2015"},
+    {id: 6, title: "The Office", service: "Netflix", year: "2015"},
+    {id: 7, title: "Seinfeld", service: "Hulu", year: "2015"},
+    {id: 8, title: "Schitt's Creek", service: "Netflix", year: "2015"}
 ]
